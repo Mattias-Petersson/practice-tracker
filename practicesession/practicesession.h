@@ -1,15 +1,19 @@
 #include <chrono>
 #include <iostream>
-
+#include <map>
+#include <ctime>
+#include "../utils/namespaces.cpp"
 #ifndef PRACTICESESSION
 #define PRACTICESESSION
+
 class PracticeSession
 {
 public:
-    std::chrono::year_month_day date;
-    std::chrono::minutes duration;
-    std::string notes;
-    PracticeSession(const std::chrono::year_month_day &date, std::chrono::minutes &duration, const std::string &notes);
-    void print();
+    C::year_month_day date;
+    C::seconds duration;
+    S::string notes;
+    PracticeSession();
+    PracticeSession(const C::year_month_day &date, const C::seconds &duration, const S::string &notes = "");
+    void print() const;
 };
 #endif
