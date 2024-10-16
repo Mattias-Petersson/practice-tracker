@@ -15,9 +15,12 @@ int main(void)
 
   C::year_month_day date2{C::year(2024), C::September, C::day(14)};
 
-  PracticeGroup Group{"Violin"};
+  PracticeGroup Group{std::string{"Violin"}};
   Group.add_session(Session);
   Group.add_session(PracticeSession(C::year_month_day{C::year(2024), C::September, C::day(14)}, C::seconds{300}));
   Group.print();
-  Group.save_to_file();
+  std::ifstream f("data/Violin.json");
+  json data = json::parse(f);
+  PracticeGroup Test{data};
+  Test.print();
 }

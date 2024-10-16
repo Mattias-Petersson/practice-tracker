@@ -6,6 +6,13 @@
 #include "../practicesession/practicesession.h"
 
 PracticeGroup::PracticeGroup(const S::string &name) : name{name} {};
+PracticeGroup::PracticeGroup(const json &data) : name{data["name"]}
+{
+    for (const auto &session : data["sessions"])
+    {
+        std::cout << session << "\n";
+    }
+};
 
 void PracticeGroup::add_session(const PracticeSession &session)
 {
@@ -44,4 +51,10 @@ void PracticeGroup::save_to_file() const
     {
         S::cerr << "Error opening file with filename " << full_path << "\n";
     }
+}
+json PracticeGroup::read_from_file() const
+{
+    std::string full_path = path + name + ext;
+    std::ifstream f(full_path);
+    return json::parse(f);
 }

@@ -16,9 +16,11 @@ private:
     S::map<C::year_month_day, PracticeSession> sessions;
     constexpr static S::string path = "data/";
     constexpr static S::string ext = ".json";
+    json read_from_file() const;
 
 public:
     PracticeGroup(const S::string &name);
+    PracticeGroup(const json &data);
     void add_session(const PracticeSession &session);
     size_t remove_session(const C::year_month_day date);
     void print() const;
