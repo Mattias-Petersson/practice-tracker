@@ -28,12 +28,20 @@ void PracticeGroup::print() const
 
 void PracticeGroup::save_to_file() const
 {
-    S::ofstream file(name);
+    json json_write = {{"name", name}, {"sessions", json::array()}};
+    std::string full_path = path + name + ext;
+    S::ofstream file(full_path);
     if (file.is_open())
     {
+        std::cout << "Here";
+        for (auto &session : sessions)
+        {
+            json_write["sessions"].push_back(session.second.to_json());
+        }
+        file << json_write.dump(4);
     }
     else
     {
-        S::cerr << "Error writing to file with filename " << name << "\n";
+        S::cerr << "Error opening file with filename " << full_path << "\n";
     }
 }

@@ -14,6 +14,8 @@ class PracticeGroup
 private:
     S::string name;
     S::map<C::year_month_day, PracticeSession> sessions;
+    constexpr static S::string path = "data/";
+    constexpr static S::string ext = ".json";
 
 public:
     PracticeGroup(const S::string &name);

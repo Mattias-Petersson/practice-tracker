@@ -11,3 +11,10 @@ void PracticeSession::print() const
     std::cout << std::format("Duration: {:02} minutes, {:02} seconds\n", minutes.count(), seconds.count());
     std::cout << std::format("Notes: {}\n", notes);
 }
+json PracticeSession::to_json() const
+{
+    return json{
+        {"date", std::format("{:%Y-%m-%d}", date)},
+        {"duration", duration.count()},
+        {"notes", notes}};
+}
