@@ -36,10 +36,15 @@ void PracticeGroup::print() const
     }
 }
 
+std::filesystem::path PracticeGroup::get_path() const
+{
+    return path + name + ext;
+}
+
 void PracticeGroup::save_to_file() const
 {
     json json_write = {{"name", name}, {"sessions", json::array()}};
-    std::string full_path = path + name + ext;
+    std::string full_path = get_path();
     S::ofstream file(full_path);
     if (file.is_open())
     {
@@ -56,7 +61,7 @@ void PracticeGroup::save_to_file() const
 }
 json PracticeGroup::read_from_file() const
 {
-    std::string full_path = path + name + ext;
+    std::string full_path = get_path();
     std::ifstream f(full_path);
     return json::parse(f);
 }

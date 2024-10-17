@@ -25,6 +25,7 @@ public:
     size_t remove_session(const C::year_month_day date);
     void print() const;
     void save_to_file() const;
+    std::filesystem::path get_path() const;
 };
 
 #endif
