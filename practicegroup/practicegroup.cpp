@@ -10,7 +10,10 @@ PracticeGroup::PracticeGroup(const json &data) : name{data["name"]}
 {
     for (const auto &session : data["sessions"])
     {
-        std::cout << session << "\n";
+        C::year_month_day date;
+        std::istringstream stream(S::string{session["date"]});
+        C::from_stream(stream, "%F", date);
+        this->sessions.emplace(date, PracticeSession{date, C::seconds{session["duration"].get<int>()}, session["notes"]});
     }
 };
 
@@ -40,7 +43,6 @@ void PracticeGroup::save_to_file() const
     S::ofstream file(full_path);
     if (file.is_open())
     {
-        std::cout << "Here";
         for (auto &session : sessions)
         {
             json_write["sessions"].push_back(session.second.to_json());
