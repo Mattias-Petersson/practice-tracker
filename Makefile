@@ -1,14 +1,20 @@
 CXX = g++
 CXXFLAGS = -std=c++23 -g
 
-all: main
+SRCS = main.cpp practicesession/practicesession.cpp practicegroup/practicegroup.cpp
+OBJS = $(SRCS:.cpp=.o)
 
-main: main.cpp
-	$(CXX) $(CXXFLAGS) -o main.out main.cpp practicesession/practicesession.cpp practicegroup/practicegroup.cpp
+.PHONY: all data clean
+
+all: data main.out
 	./main.out
+
+data:
+	mkdir -p data
+
+main.out: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 
 clean:
-	rm -f main.out
-
-
+	rm -f main.out $(OBJS)
