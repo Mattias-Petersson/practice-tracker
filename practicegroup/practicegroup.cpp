@@ -5,7 +5,7 @@
 #include "practicegroup.h"
 #include "../practicesession/practicesession.h"
 
-PracticeGroup::PracticeGroup(const S::string &name) : name{name} {};
+PracticeGroup::PracticeGroup(const S::string &name) : name{name} { this->save_to_file(); };
 PracticeGroup::PracticeGroup(const json &data) : name{data["name"]}
 {
     for (const auto &session : data["sessions"])
@@ -15,16 +15,27 @@ PracticeGroup::PracticeGroup(const json &data) : name{data["name"]}
         C::from_stream(stream, "%F", date);
         this->sessions.emplace(date, PracticeSession{date, C::seconds{session["duration"].get<int>()}, session["notes"]});
     }
+    this->save_to_file();
 };
 
 void PracticeGroup::add_session(const PracticeSession &session)
 {
     // TODO: Return something to indicate success/failure.
     sessions[session.date] = session;
+    this->save_to_file();
 }
-size_t PracticeGroup::remove_session(const C::year_month_day date)
+void PracticeGroup::remove_session(const C::year_month_day date)
 {
-    return sessions.erase(date);
+    auto to_remove = sessions.find(date);
+    if (to_remove != sessions.end())
+    {
+        sessions.erase(to_remove);
+        this->save_to_file();
+    }
+    else
+    {
+        throw std::invalid_argument("No such date to remove.");
+    }
 }
 void PracticeGroup::print() const
 {
@@ -34,6 +45,11 @@ void PracticeGroup::print() const
         session.second.print();
         S::cout << "\n";
     }
+}
+
+std::string_view PracticeGroup::get_name() const
+{
+    return this->name;
 }
 
 std::filesystem::path PracticeGroup::get_path() const
