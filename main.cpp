@@ -3,7 +3,7 @@
 #include "practicesession/practicesession.h"
 #include "practicegroup/practicegroup.h"
 #include "nlohmann/json.hpp"
-#include "utils/namespaces.cpp"
+#include "utils/namespaces.h"
 #include "cliversion.cpp"
 #include <format>
 
@@ -14,7 +14,7 @@ void make_data()
 {
   C::year_month_day date{C::year(2024), C::October, C::day(14)};
   C::seconds duration{3605};
-  S::string notes{"Violin scales"};
+  std::string notes{"Violin scales"};
   PracticeSession Session{date, duration, notes};
 
   PracticeGroup Group{std::string{"Violin"}};

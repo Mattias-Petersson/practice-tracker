@@ -1,7 +1,8 @@
 #include "practicesession.h"
+#include "../utils/namespaces.h"
 
 PracticeSession::PracticeSession() {};
-PracticeSession::PracticeSession(const C::year_month_day &date, const C::seconds &duration, const S::string &notes) : date(date), duration(duration), notes(notes) {}
+PracticeSession::PracticeSession(const C::year_month_day &date, const C::seconds &duration, const std::string &notes) : date(date), duration(duration), notes(notes) {}
 
 PracticeSession PracticeSession::create_from_input(std::istream &input)
 {

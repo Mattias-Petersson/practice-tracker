@@ -3,15 +3,16 @@
 #include <vector>
 #include <map>
 #include "practicegroup.h"
+#include "../utils/namespaces.h"
 #include "../practicesession/practicesession.h"
 
-PracticeGroup::PracticeGroup(const S::string &name) : name{name} { this->save_to_file(); };
+PracticeGroup::PracticeGroup(const std::string &name) : name{name} { this->save_to_file(); };
 PracticeGroup::PracticeGroup(const json &data) : name{data["name"]}
 {
     for (const auto &session : data["sessions"])
     {
         C::year_month_day date;
-        std::istringstream stream(S::string{session["date"]});
+        std::istringstream stream(std::string{session["date"]});
         C::from_stream(stream, "%F", date);
         this->sessions.emplace(date, PracticeSession{date, C::seconds{session["duration"].get<int>()}, session["notes"]});
     }
@@ -39,11 +40,11 @@ void PracticeGroup::remove_session(const C::year_month_day date)
 }
 void PracticeGroup::print() const
 {
-    S::cout << "Group name: " << this->name << "\n\n";
+    std::cout << "Group name: " << this->name << "\n\n";
     for (auto &session : sessions)
     {
         session.second.print();
-        S::cout << "\n";
+        std::cout << "\n";
     }
 }
 
@@ -61,7 +62,7 @@ void PracticeGroup::save_to_file() const
 {
     json json_write = {{"name", name}, {"sessions", json::array()}};
     std::string full_path = get_path();
-    S::ofstream file(full_path);
+    std::ofstream file(full_path);
     if (file.is_open())
     {
         for (auto &session : sessions)
@@ -72,7 +73,7 @@ void PracticeGroup::save_to_file() const
     }
     else
     {
-        S::cerr << "Error opening file with filename " << full_path << "\n";
+        std::cerr << "Error opening file with filename " << full_path << "\n";
     }
 }
 json PracticeGroup::read_from_file() const
